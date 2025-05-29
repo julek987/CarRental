@@ -61,7 +61,7 @@
     </div>
     <div class="form-actions">
       <button type="submit" class="btn btn-save">Save</button>
-      <a href="../users" class="btn btn-cancel">Cancel</a>
+      <a href="/admin/users" class="btn btn-cancel">Cancel</a>
     </div>
   </form>
 </div>

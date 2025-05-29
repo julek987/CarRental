@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin/users")
 public class AppUserController {
@@ -19,9 +21,12 @@ public class AppUserController {
     }
 
     @GetMapping
-    public String listAppUsers(Model model) {
-        model.addAttribute("users", appUserService.listAppUsers());
-        return "users";
+    public String listAppUsers(@RequestParam(required = false) String login,
+                               @RequestParam(required = false) String role,
+                               Model model) {
+        List<AppUser> filteredUsers = appUserService.listAppUsersByLoginAndRole(login, role);
+        model.addAttribute("users", filteredUsers);
+        return "users"; // JSP page name
     }
 
     @GetMapping("/add")

@@ -11,4 +11,5 @@ public interface AppUserService {
     public void deleteAppUser(long id);
     public AppUser getAppUserById(long id);
     public List<AppUser> listAppUsers();
+    List<AppUser> listAppUsersByLoginAndRole(String login, String role);
 }
