@@ -2,30 +2,56 @@ package WPFAT.controller;
 
 import WPFAT.model.AppUser;
 import WPFAT.service.AppUserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/admin/users")
 public class AppUserController {
 
-    private AppUserService appUserService;
+    private final AppUserService appUserService;
+
     @Autowired
     public AppUserController(AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 
-    @RequestMapping(value = "/appUsers")
-    public String listAppUsers(Model model, HttpServletRequest request) {
-        int appUserId = ServletRequestUtils.getIntParameter(request, "appUserId", -1);
-        if (appUserId > 0) {
-            model.addAttribute("appUser", appUserService.getAppUserById(appUserId));
-        }else
-            model.addAttribute("appUser", new AppUser());
-        model.addAttribute("appUserList", appUserService.listAppUsers());
-        return "appUser";
+    @GetMapping
+    public String listAppUsers(Model model) {
+        model.addAttribute("users", appUserService.listAppUsers());
+        return "users";
+    }
+
+    @GetMapping("/add")
+    public String showAddForm(Model model) {
+        model.addAttribute("user", new AppUser());
+        return "add-user";
+    }
+
+    @PostMapping("/add")
+    public String addAppUser(@ModelAttribute AppUser appUser) {
+        appUserService.addAppUser(appUser);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable long id, Model model) {
+        AppUser user = appUserService.getAppUserById(id);
+        model.addAttribute("user", user);
+        return "edit-user";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editAppUser(@PathVariable long id, @ModelAttribute AppUser appUser) {
+        appUserService.editAppUser(appUser);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteAppUser(@PathVariable long id) {
+        appUserService.deleteAppUser(id);
+        return "redirect:/admin/users";
     }
 }

@@ -13,8 +13,8 @@ public class AppUser {
     @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "passwordHash", nullable = false)
-    private String passwordHash;
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "firstname", nullable = false)
     private String firstName;
@@ -54,12 +54,12 @@ public class AppUser {
         this.login = login;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
