@@ -58,7 +58,11 @@
     </div>
     <div class="form-group">
       <label for="role">Role:</label>
-      <input type="text" id="role" name="role" value="${user.role}" required>
+      <select id="role" name="role" required>
+        <option value="USER" ${user.role == 'USER' ? 'selected' : ''}>USER</option>
+        <option value="MANAGER" ${user.role == 'MANAGER' ? 'selected' : ''}>MANAGER</option>
+        <option value="ADMIN" ${user.role == 'ADMIN' ? 'selected' : ''}>ADMIN</option>
+      </select>
     </div>
     <div class="form-actions">
       <button type="submit" class="btn btn-save">Update</button>

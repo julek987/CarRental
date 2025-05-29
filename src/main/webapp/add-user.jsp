@@ -57,7 +57,12 @@
     </div>
     <div class="form-group">
       <label for="role">Role:</label>
-      <input type="text" id="role" name="role" required>
+      <select id="role" name="role" required>
+        <option value="">-- Select Role --</option>
+        <option value="USER">USER</option>
+        <option value="MANAGER">MANAGER</option>
+        <option value="ADMIN">ADMIN</option>
+      </select>
     </div>
     <div class="form-actions">
       <button type="submit" class="btn btn-save">Save</button>
