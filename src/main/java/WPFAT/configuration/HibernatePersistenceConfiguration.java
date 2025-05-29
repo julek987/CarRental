@@ -17,7 +17,8 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories
+//basePackages??
+@EnableJpaRepositories(basePackages = "WPFAT.repository")
 @EnableTransactionManagement
 public class HibernatePersistenceConfiguration {
 

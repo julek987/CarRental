@@ -34,6 +34,10 @@ public class AppUser {
     @Column(name = "verified")
     private boolean verified;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private UserRole role;
+
     public Long getId() {
         return id;
     }
@@ -104,5 +108,13 @@ public class AppUser {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }
