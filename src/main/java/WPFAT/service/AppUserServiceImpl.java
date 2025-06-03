@@ -4,6 +4,7 @@ import WPFAT.model.AppUser;
 import WPFAT.model.UserRole;
 import WPFAT.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,19 +14,25 @@ import java.util.List;
 public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AppUserServiceImpl(AppUserRepository appUserRepository) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository,  PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public void addAppUser(AppUser appUser) {
+        appUser.setRole(UserRole.USER);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUserRepository.save(appUser);
     }
 
     @Transactional
     public void editAppUser(AppUser appUser) {
+        appUser.setRole(UserRole.USER);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUserRepository.save(appUser);
     }
 
@@ -37,6 +44,11 @@ public class AppUserServiceImpl implements AppUserService {
     @Transactional
     public AppUser getAppUserById(long id) {
         return appUserRepository.findById(id);
+    }
+
+    @Override
+    public AppUser getAppUserByLogin(String login) {
+        return appUserRepository.findByLogin(login);
     }
 
     @Override

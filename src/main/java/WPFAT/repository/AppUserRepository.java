@@ -11,7 +11,7 @@ import java.util.List;
 @Transactional
 @Repository
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
-    List<AppUser> findByLogin(String login);
+    AppUser findByLogin(String login);
 
     AppUser findById(long id);
 

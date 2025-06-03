@@ -2,6 +2,8 @@ package WPFAT.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "appuser")
 public class AppUser {
@@ -117,4 +119,5 @@ public class AppUser {
     public void setRole(UserRole role) {
         this.role = role;
     }
+
 }
