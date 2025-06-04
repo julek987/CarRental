@@ -47,7 +47,7 @@
       <div class="card-body">
         <h4 class="card-title text-center mb-3"><spring:message code="label.register"/></h4>
 
-        <form:form method="post" action="/register" modelAttribute="user">
+        <form:form method="post" action="/register" modelAttribute="appUser">
           <div class="row g-2">
             <div class="col-6">
               <div class="form-group">
@@ -64,8 +64,8 @@
           </div>
 
           <div class="form-group">
-            <label for="username" class="form-label small"><spring:message code="label.username"/></label>
-            <input type="text" class="form-control form-control-sm compact-input" id="username" name="username" required>
+            <label for="login" class="form-label small"><spring:message code="label.username"/></label>
+            <input type="text" class="form-control form-control-sm compact-input" id="login" name="login" required>
           </div>
 
           <div class="form-group">
@@ -87,8 +87,8 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label for="birthDate" class="form-label small"><spring:message code="label.birthDate"/></label>
-                <input type="date" class="form-control form-control-sm compact-input" id="birthDate" name="birthDate">
+                <label for="dateOfBirth" class="form-label small"><spring:message code="label.birthDate"/></label>
+                <input type="date" class="form-control form-control-sm compact-input" id="dateOfBirth" name="dateOfBirth" required>
               </div>
             </div>
           </div>

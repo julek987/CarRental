@@ -1,8 +1,9 @@
 package WPFAT.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Set;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "appuser")
@@ -30,8 +31,10 @@ public class AppUser {
     @Column(name = "telepone", nullable = false)
     private String telephone;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dateofbirth", nullable = false)
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
+
 
     @Column(name = "verified")
     private boolean verified;
@@ -96,11 +99,11 @@ public class AppUser {
         this.telephone = telephone;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
