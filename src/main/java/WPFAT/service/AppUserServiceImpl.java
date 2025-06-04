@@ -31,7 +31,6 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Transactional
     public void editAppUser(AppUser appUser) {
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUserRepository.save(appUser);
     }
 

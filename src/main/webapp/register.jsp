@@ -1,11 +1,13 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
   <title><spring:message code="label.register"/></title>
   <meta charset="UTF-8">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://www.google.com/recaptcha/api.js"></script>
   <style>
     body {
       background-color: #f8f9fa;
@@ -29,10 +31,6 @@
     .card-body {
       padding: 1.5rem;
     }
-    .compact-input {
-      padding: 0.375rem 0.75rem;
-      font-size: 0.875rem;
-    }
   </style>
 </head>
 <body>
@@ -47,50 +45,58 @@
       <div class="card-body">
         <h4 class="card-title text-center mb-3"><spring:message code="label.register"/></h4>
 
+        <c:if test="${not empty error}">
+          <div class="alert alert-danger">${error}</div>
+        </c:if>
+
         <form:form method="post" action="/register" modelAttribute="appUser">
           <div class="row g-2">
             <div class="col-6">
               <div class="form-group">
                 <label for="firstName" class="form-label small"><spring:message code="label.firstName"/></label>
-                <input type="text" class="form-control form-control-sm compact-input" id="firstName" name="firstName" required>
+                <form:input path="firstName" class="form-control form-control-sm" id="firstName" required="true"/>
               </div>
             </div>
             <div class="col-6">
               <div class="form-group">
                 <label for="lastName" class="form-label small"><spring:message code="label.lastName"/></label>
-                <input type="text" class="form-control form-control-sm compact-input" id="lastName" name="lastName" required>
+                <form:input path="lastName" class="form-control form-control-sm" id="lastName" required="true"/>
               </div>
             </div>
           </div>
 
           <div class="form-group">
             <label for="login" class="form-label small"><spring:message code="label.username"/></label>
-            <input type="text" class="form-control form-control-sm compact-input" id="login" name="login" required>
+            <form:input path="login" class="form-control form-control-sm" id="login" required="true"/>
           </div>
 
           <div class="form-group">
             <label for="password" class="form-label small"><spring:message code="label.password"/></label>
-            <input type="password" class="form-control form-control-sm compact-input" id="password" name="password" required>
+            <form:password path="password" class="form-control form-control-sm" id="password" required="true"/>
           </div>
 
           <div class="form-group">
             <label for="email" class="form-label small"><spring:message code="label.email"/></label>
-            <input type="email" class="form-control form-control-sm compact-input" id="email" name="email" required>
+            <form:input path="email" type="email" class="form-control form-control-sm" id="email" required="true"/>
           </div>
 
           <div class="row g-2">
             <div class="col-6">
               <div class="form-group">
                 <label for="telephone" class="form-label small"><spring:message code="label.telephone"/></label>
-                <input type="tel" class="form-control form-control-sm compact-input" id="telephone" name="telephone">
+                <form:input path="telephone" type="tel" class="form-control form-control-sm" id="telephone"/>
               </div>
             </div>
             <div class="col-6">
               <div class="form-group">
                 <label for="dateOfBirth" class="form-label small"><spring:message code="label.birthDate"/></label>
-                <input type="date" class="form-control form-control-sm compact-input" id="dateOfBirth" name="dateOfBirth" required>
+                <form:input path="dateOfBirth" type="date" class="form-control form-control-sm" id="dateOfBirth" required="true"/>
               </div>
             </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <div class="g-recaptcha" data-sitekey="6Lf3PhUrAAAAAMz4ph3f31CMLscueFFcj1oOrzp1"></div>
           </div>
 
           <div class="d-grid gap-2 mt-3">
