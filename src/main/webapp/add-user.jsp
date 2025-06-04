@@ -20,6 +20,7 @@
 <div class="form-container">
   <h2>Add New User</h2>
   <form method="post" action="add">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <div class="form-group">
       <label for="login">Login:</label>
       <input type="text" id="login" name="login" required>

@@ -36,17 +36,17 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/login*", "/register").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/login*", "/register*").permitAll()
+                        .requestMatchers("/admin*").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .usernameParameter("login")  // Match your form field
+                        .usernameParameter("login")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/admin/users", true)
-                        .failureUrl("/login?error=true")  // Explicit error param
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -55,8 +55,7 @@ public class SecurityConfiguration {
                 )
                 .exceptionHandling(handling -> handling
                         .accessDeniedPage("/AccessDenied")
-                )
-                .csrf().disable();  // Temporarily disable for testing
+                );
         return http.build();
     }
 }

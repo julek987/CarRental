@@ -20,6 +20,7 @@
 <div class="form-container">
   <h2>Edit User</h2>
   <form method="post" action="../edit/${user.id}">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <input type="hidden" name="id" value="${user.id}">
     <div class="form-group">
       <label for="login">Login:</label>
