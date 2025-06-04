@@ -37,7 +37,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login*", "/register*").permitAll()
-                        .requestMatchers("/admin*").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                         .permitAll()
                 )
                 .exceptionHandling(handling -> handling
-                        .accessDeniedPage("/AccessDenied")
+                        .accessDeniedPage("/accessDenied")
                 );
         return http.build();
     }
