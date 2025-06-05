@@ -83,10 +83,20 @@
             </select>
         </label>
 
-        <label>Model: <input type="text" name="model" value="${param.model}"></label>
-
         <label>Min Price: <input type="number" name="minPrice" value="${param.minPrice}" step="10"></label>
         <label>Max Price: <input type="number" name="maxPrice" value="${param.maxPrice}" step="10"></label>
+
+        <label>Sort by:
+            <select name="sort">
+                <option value="">Default</option>
+                <option value="brand_asc" ${param.sort == 'brand_asc' ? 'selected' : ''}>Brand (A-Z)</option>
+                <option value="brand_desc" ${param.sort == 'brand_desc' ? 'selected' : ''}>Brand (Z-A)</option>
+                <option value="price_asc" ${param.sort == 'price_asc' ? 'selected' : ''}>Price (Low to High)</option>
+                <option value="price_desc" ${param.sort == 'price_desc' ? 'selected' : ''}>Price (High to Low)</option>
+                <option value="year_asc" ${param.sort == 'year_asc' ? 'selected' : ''}>Year (Oldest)</option>
+                <option value="year_desc" ${param.sort == 'year_desc' ? 'selected' : ''}>Year (Newest)</option>
+            </select>
+        </label>
 
         <button type="submit">Filter</button>
         <a href="${pageContext.request.contextPath}/cars">Reset</a>

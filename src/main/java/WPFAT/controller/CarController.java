@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Comparator;
 
 @Controller
 @RequestMapping("/cars")
@@ -30,19 +31,15 @@ public class CarController {
             @RequestParam(required = false) String model,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) String sort,
             Model modelView) {
 
         List<Car> availableCars = carService.getAvailableCars();
 
+        // Apply filters
         if (brand != null && !brand.isEmpty()) {
             availableCars = availableCars.stream()
                     .filter(car -> car.getBrand().equalsIgnoreCase(brand))
-                    .toList();
-        }
-
-        if (model != null && !model.isEmpty()) {
-            availableCars = availableCars.stream()
-                    .filter(car -> car.getModel().equalsIgnoreCase(model))
                     .toList();
         }
 
@@ -58,6 +55,11 @@ public class CarController {
                     .toList();
         }
 
+        // Apply sorting
+        if (sort != null && !sort.isEmpty()) {
+            availableCars = sortCars(availableCars, sort);
+        }
+
         modelView.addAttribute("cars", availableCars);
         modelView.addAttribute("brands", carService.getAllCars().stream()
                 .map(Car::getBrand)
@@ -65,6 +67,30 @@ public class CarController {
                 .toList());
 
         return "car-list";
+    }
+
+    private List<Car> sortCars(List<Car> cars, String sortOption) {
+        return switch (sortOption) {
+            case "brand_asc" -> cars.stream()
+                    .sorted(Comparator.comparing(Car::getBrand, String.CASE_INSENSITIVE_ORDER))
+                    .toList();
+            case "brand_desc" -> cars.stream()
+                    .sorted(Comparator.comparing(Car::getBrand, String.CASE_INSENSITIVE_ORDER).reversed())
+                    .toList();
+            case "price_asc" -> cars.stream()
+                    .sorted(Comparator.comparing(Car::getDailyCost))
+                    .toList();
+            case "price_desc" -> cars.stream()
+                    .sorted(Comparator.comparing(Car::getDailyCost).reversed())
+                    .toList();
+            case "year_asc" -> cars.stream()
+                    .sorted(Comparator.comparing(Car::getYear))
+                    .toList();
+            case "year_desc" -> cars.stream()
+                    .sorted(Comparator.comparing(Car::getYear).reversed())
+                    .toList();
+            default -> cars;
+        };
     }
 
     @GetMapping("/{id}")
