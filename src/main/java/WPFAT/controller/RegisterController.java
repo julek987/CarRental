@@ -26,7 +26,10 @@ public class RegisterController {
     private final VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
-    public RegisterController(AppUserService appUserService, ReCaptchaService reCaptchaService, EmailService emailService,  VerificationTokenRepository verificationTokenRepository) {
+    public RegisterController(AppUserService appUserService,
+                              ReCaptchaService reCaptchaService,
+                              EmailService emailService,
+                              VerificationTokenRepository verificationTokenRepository) {
         this.appUserService = appUserService;
         this.reCaptchaService = reCaptchaService;
         this.emailService = emailService;
@@ -40,7 +43,9 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute AppUser appUser, HttpServletRequest request, Model model) {
+    public String registerUser(@ModelAttribute AppUser appUser,
+                               HttpServletRequest request,
+                               Model model) {
         boolean isCaptchaValid = reCaptchaService.verify(request.getParameter("g-recaptcha-response"));
 
         if (!isCaptchaValid) {
@@ -62,11 +67,12 @@ public class RegisterController {
 
         // Send email
         String verificationUrl = request.getRequestURL().toString().replace("/register", "/verify?token=" + token);
-        emailService.SendEmail(appUser.getEmail(),
-                "Click the link to activate your account: " + verificationUrl,
-                "CarRental Account Activation");
+        String emailContent = "Click the link to activate your account: " + verificationUrl;
+        String subject = "CarRental Account Activation";
+
+        // Use the simple email method without attachments
+        emailService.sendEmail(appUser.getEmail(), emailContent, subject);
 
         return "redirect:/login";
     }
-
 }
