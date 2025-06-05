@@ -68,7 +68,10 @@ public class PaymentController {
 
     @GetMapping("/success")
     public String paymentSuccess(@RequestParam Long orderId, Model model) {
-        model.addAttribute("order", orderService.getOrderById(orderId));
+        Order order = orderService.getOrderById(orderId);
+        model.addAttribute("order", order);
+        model.addAttribute("startDate", java.sql.Date.valueOf(order.getStartDate()));
+        model.addAttribute("endDate", java.sql.Date.valueOf(order.getEndDate()));
         return "payment-success";
     }
 }

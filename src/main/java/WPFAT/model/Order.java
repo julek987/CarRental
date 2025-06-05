@@ -35,6 +35,14 @@ public class Order {
     @Column(name = "status", nullable = false)
     private OrderStatus status = OrderStatus.PENDING;
 
+    @ManyToOne
+    @JoinColumn(name = "pickup_location_id", nullable = false)
+    private PickupLocation pickupLocation;
+
+    @ManyToOne
+    @JoinColumn(name = "return_location_id", nullable = false)
+    private PickupLocation returnLocation;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method")
     private PaymentMethod paymentMethod;
@@ -93,6 +101,22 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public PickupLocation getPickupLocation() {
+        return pickupLocation;
+    }
+
+    public void setPickupLocation(PickupLocation pickupLocation) {
+        this.pickupLocation = pickupLocation;
+    }
+
+    public PickupLocation getReturnLocation() {
+        return returnLocation;
+    }
+
+    public void setReturnLocation(PickupLocation returnLocation) {
+        this.returnLocation = returnLocation;
     }
 
     public PaymentMethod getPaymentMethod() {

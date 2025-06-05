@@ -2,6 +2,7 @@ package WPFAT.controller;
 
 import WPFAT.model.Car;
 import WPFAT.service.interfaces.CarService;
+import WPFAT.service.interfaces.PickupLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,12 @@ import java.util.List;
 public class CarController {
 
     private final CarService carService;
+    private final PickupLocationService pickupLocationService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService,  PickupLocationService pickupLocationService) {
         this.carService = carService;
+        this.pickupLocationService = pickupLocationService;
     }
 
     @GetMapping
@@ -70,6 +73,7 @@ public class CarController {
         model.addAttribute("car", car);
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("maxDate", LocalDate.now().plusMonths(3));
+        model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
         return "car-details";
     }
 }

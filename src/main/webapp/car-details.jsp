@@ -8,6 +8,9 @@
     .car-details { display: flex; gap: 20px; }
     .car-img { width: 300px; height: 200px; background: #eee; display: flex; align-items: center; justify-content: center; }
     .reservation-form { margin-top: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    select, input[type="date"] { width: 200px; padding: 8px; }
   </style>
 </head>
 <body>
@@ -31,13 +34,37 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <input type="hidden" name="carId" value="${car.id}">
 
-    <label>Start Date:
-      <input type="date" name="startDate" min="${today}" max="${maxDate}" required>
-    </label>
+    <div class="form-group">
+      <label>Start Date:
+        <input type="date" name="startDate" min="${today}" max="${maxDate}" required>
+      </label>
+    </div>
 
-    <label>End Date:
-      <input type="date" name="endDate" min="${today}" max="${maxDate}" required>
-    </label>
+    <div class="form-group">
+      <label>End Date:
+        <input type="date" name="endDate" min="${today}" max="${maxDate}" required>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Pickup Location:
+        <select name="pickupLocationId" required>
+          <c:forEach items="${locations}" var="location">
+            <option value="${location.id}">${location.city}, ${location.address}</option>
+          </c:forEach>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Return Location:
+        <select name="returnLocationId" required>
+          <c:forEach items="${locations}" var="location">
+            <option value="${location.id}">${location.city}, ${location.address}</option>
+          </c:forEach>
+        </select>
+      </label>
+    </div>
 
     <button type="submit">Confirm Reservation</button>
   </form>
