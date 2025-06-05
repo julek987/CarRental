@@ -1,4 +1,4 @@
-package WPFAT.service;
+package WPFAT.service.interfaces;
 
 import WPFAT.model.AppUser;
 

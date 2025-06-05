@@ -1,5 +1,6 @@
 package WPFAT.service;
 
+import WPFAT.service.interfaces.ReCaptchaService;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;

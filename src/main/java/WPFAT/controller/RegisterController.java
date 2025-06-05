@@ -1,8 +1,9 @@
 package WPFAT.controller;
 
 import WPFAT.model.AppUser;
-import WPFAT.service.AppUserService;
-import WPFAT.service.ReCaptchaService;
+import WPFAT.service.interfaces.AppUserService;
+import WPFAT.service.interfaces.EmailService;
+import WPFAT.service.interfaces.ReCaptchaService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,11 +17,13 @@ public class RegisterController {
 
     private final AppUserService appUserService;
     private final ReCaptchaService reCaptchaService;
+    private final EmailService emailService;
 
     @Autowired
-    public RegisterController(AppUserService appUserService, ReCaptchaService reCaptchaService) {
+    public RegisterController(AppUserService appUserService, ReCaptchaService reCaptchaService, EmailService emailService) {
         this.appUserService = appUserService;
         this.reCaptchaService = reCaptchaService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/register")
@@ -39,6 +42,7 @@ public class RegisterController {
         }
 
         appUserService.addAppUser(appUser);
+        emailService.SendEmail(appUser.getEmail(), "Thanks for registration",  "CarRental account creation");
         return "redirect:/login";
     }
 }

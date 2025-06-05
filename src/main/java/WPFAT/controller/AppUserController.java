@@ -1,7 +1,7 @@
 package WPFAT.controller;
 
 import WPFAT.model.AppUser;
-import WPFAT.service.AppUserService;
+import WPFAT.service.interfaces.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

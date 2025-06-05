@@ -25,10 +25,10 @@ public class AppUser {
     @Column(name = "lastname", nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false,  unique = true)
     private String email;
 
-    @Column(name = "telepone", nullable = false)
+    @Column(name = "telephone", nullable = false)
     private String telephone;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
