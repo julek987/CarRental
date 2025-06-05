@@ -21,7 +21,6 @@ public class CarController {
         this.carService = carService;
     }
 
-    // Main page - Show available cars with filters
     @GetMapping
     public String showAvailableCars(
             @RequestParam(required = false) String brand,
@@ -32,7 +31,6 @@ public class CarController {
 
         List<Car> availableCars = carService.getAvailableCars();
 
-        // Apply filters if provided
         if (brand != null && !brand.isEmpty()) {
             availableCars = availableCars.stream()
                     .filter(car -> car.getBrand().equalsIgnoreCase(brand))
@@ -66,13 +64,12 @@ public class CarController {
         return "car-list";
     }
 
-    // Show car details and reservation form
     @GetMapping("/{id}")
     public String showCarDetails(@PathVariable Long id, Model model) {
         Car car = carService.getCarById(id);
         model.addAttribute("car", car);
         model.addAttribute("today", LocalDate.now());
-        model.addAttribute("maxDate", LocalDate.now().plusMonths(3)); // Allow booking up to 3 months ahead
+        model.addAttribute("maxDate", LocalDate.now().plusMonths(3));
         return "car-details";
     }
 }

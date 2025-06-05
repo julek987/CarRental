@@ -28,6 +28,7 @@
 <div class="reservation-form">
   <h2>Reservation Details</h2>
   <form action="${pageContext.request.contextPath}/orders" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <input type="hidden" name="carId" value="${car.id}">
 
     <label>Start Date:

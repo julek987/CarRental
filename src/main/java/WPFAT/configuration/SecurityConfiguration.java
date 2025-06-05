@@ -41,7 +41,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login*", "/register*").permitAll()
-                        .requestMatchers("/cars/**").permitAll()
+                        .requestMatchers("/cars/**", "/orders/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
