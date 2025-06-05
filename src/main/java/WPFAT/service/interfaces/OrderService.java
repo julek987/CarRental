@@ -9,6 +9,7 @@ import java.util.List;
 public interface OrderService {
     Order createOrder(Order order);
     Order getOrderById(Long id);
+    Order updateOrder(Order order);
     List<Order> getOrdersByUser(AppUser user);
     void cancelOrder(Long orderId);
     boolean isCarAvailable(Long carId, LocalDate startDate, LocalDate endDate);

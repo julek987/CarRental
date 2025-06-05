@@ -39,6 +39,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
+    public Order updateOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
+    @Override
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));

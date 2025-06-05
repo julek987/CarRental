@@ -47,9 +47,7 @@ public class OrderController {
         order.setEndDate(endDate);
 
         Order savedOrder = orderService.createOrder(order);
-        redirectAttributes.addFlashAttribute("order", savedOrder);
-
-        return "redirect:/orders/success";
+        return "redirect:/payments/" + savedOrder.getId();
     }
 
     @GetMapping("/success")
