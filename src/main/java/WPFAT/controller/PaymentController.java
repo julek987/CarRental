@@ -52,14 +52,12 @@ public class PaymentController {
         order = orderService.updateOrder(order);
 
         try {
-            // Generate PDF to memory stream using the new method
             ByteArrayOutputStream pdfStream = pdfService.generatePdfToStream(
                     order.getCar(),
                     order,
                     order.getUser()
             );
 
-            // Prepare email content
             String emailContent = String.format(
                     "Dear %s,\n\n" +
                             "Thank you for your order!\n\n" +
@@ -78,7 +76,6 @@ public class PaymentController {
                     order.getTotalPrice()
             );
 
-            // Send email with PDF attachment
             String attachmentName = String.format("Rental_Confirmation_%d.pdf", order.getId());
             emailService.sendEmailWithAttachment(
                     order.getUser().getEmail(),

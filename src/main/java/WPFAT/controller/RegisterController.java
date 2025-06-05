@@ -56,7 +56,6 @@ public class RegisterController {
         appUser.setVerified(false);
         appUserService.addAppUser(appUser);
 
-        // Create token
         String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
@@ -65,12 +64,10 @@ public class RegisterController {
 
         verificationTokenRepository.save(verificationToken);
 
-        // Send email
         String verificationUrl = request.getRequestURL().toString().replace("/register", "/verify?token=" + token);
         String emailContent = "Click the link to activate your account: " + verificationUrl;
         String subject = "CarRental Account Activation";
 
-        // Use the simple email method without attachments
         emailService.sendEmail(appUser.getEmail(), emailContent, subject);
 
         return "redirect:/login";

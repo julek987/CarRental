@@ -5,6 +5,7 @@ import WPFAT.model.Car;
 import WPFAT.model.Order;
 import WPFAT.service.interfaces.PdfService;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -20,18 +21,36 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class PdfServiceImpl implements PdfService {
 
-    private static final Font TITLE_FONT = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-    private static final Font HEADER_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
-    private static final Font NORMAL_FONT = new Font(Font.FontFamily.HELVETICA, 10);
-    private static final Font HIGHLIGHT_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLUE);
+    private static final String FONT_PATH = "fonts/ARIAL.TTF";
+    private static BaseFont UNICODE_FONT;
+    private static Font TITLE_FONT;
+    private static Font HEADER_FONT;
+    private static Font NORMAL_FONT;
+    private static Font HIGHLIGHT_FONT;
+
+    static {
+        try {
+            // Load the Unicode font
+            UNICODE_FONT = BaseFont.createFont(FONT_PATH, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            // Initialize font styles
+            TITLE_FONT = new Font(UNICODE_FONT, 18, Font.BOLD);
+            HEADER_FONT = new Font(UNICODE_FONT, 12, Font.BOLD);
+            NORMAL_FONT = new Font(UNICODE_FONT, 10);
+            HIGHLIGHT_FONT = new Font(UNICODE_FONT, 10, Font.BOLD, BaseColor.BLUE);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize fonts", e);
+        }
+    }
 
     @Override
     public void generatePdfToResponse(Car car, Order order, AppUser appUser, HttpServletResponse response) throws IOException {
         try {
             response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename=" + appUser.getLogin() + "_order_" + order.getId() + ".pdf");
-
+            response.setContentType("application/pdf; charset=UTF-8");
+            response.setHeader("Content-Disposition", "inline; filename=" +
+                    new String((appUser.getLogin() + "_order_" + order.getId() + ".pdf").getBytes("UTF-8"), "ISO-8859-1"));
             OutputStream outputStream = response.getOutputStream();
             generatePdfContent(car, order, appUser, outputStream);
             outputStream.close();
@@ -145,8 +164,6 @@ public class PdfServiceImpl implements PdfService {
         PdfPTable table = new PdfPTable(2);
         table.setWidthPercentage(100);
         table.setWidths(new int[]{1, 2});
-
-        // Remove table border
         table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
         for (int i = 0; i < keys.length; i++) {
@@ -160,7 +177,6 @@ public class PdfServiceImpl implements PdfService {
             valueCell.setBorder(Rectangle.NO_BORDER);
             table.addCell(valueCell);
         }
-
         return table;
     }
 }
