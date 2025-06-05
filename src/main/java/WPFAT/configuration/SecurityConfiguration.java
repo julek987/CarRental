@@ -20,8 +20,13 @@ public class SecurityConfiguration {
     @Resource
     private UserDetailsService userDetailsService;
 
+    @Resource
+    private RoleBasedAuthenticationSuccessHandler successHandler; // Inject the custom handler
+
     @Bean
-    public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     DaoAuthenticationProvider daoAuthenticationProvider() {
@@ -31,12 +36,12 @@ public class SecurityConfiguration {
         return daoAuthenticationProvider;
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login*", "/register*").permitAll()
+                        .requestMatchers("/cars/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -45,7 +50,7 @@ public class SecurityConfiguration {
                         .loginProcessingUrl("/login")
                         .usernameParameter("login")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/admin/users", true)
+                        .successHandler(successHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
