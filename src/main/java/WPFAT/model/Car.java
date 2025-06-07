@@ -2,7 +2,6 @@ package WPFAT.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,8 +33,8 @@ public class Car {
     @Column(name = "available", nullable = false)
     private boolean available = true;
 
-    @Column(name = "image_path")
-    private String imagePath;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Order> orders;
@@ -104,12 +103,12 @@ public class Car {
         this.available = available;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageUrl(String imagePath) {
+        this.imageUrl = imagePath;
     }
 
     public List<Order> getOrders() {

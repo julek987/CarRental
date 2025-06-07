@@ -11,15 +11,18 @@
             margin-bottom: 20px;
             border-radius: 5px;
         }
+
         .filter-box label {
             margin-right: 15px;
         }
+
         .car-list {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: flex-start;
         }
+
         .car-card {
             border: 1px solid #ddd;
             padding: 15px;
@@ -27,6 +30,7 @@
             width: calc(33.33% - 20px);
             box-sizing: border-box;
         }
+
         .car-img {
             width: 100%;
             height: 180px;
@@ -36,15 +40,26 @@
             justify-content: center;
             margin-bottom: 10px;
             border-radius: 4px;
+            overflow: hidden;
         }
+
+        .car-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
         .car-card h3 {
             margin: 0 0 10px 0;
             color: #333;
         }
+
         .car-card p {
             margin: 5px 0;
             color: #666;
         }
+
         .car-card a {
             display: inline-block;
             margin-top: 10px;
@@ -54,20 +69,24 @@
             text-decoration: none;
             border-radius: 4px;
         }
+
         .car-card a:hover {
             background: #0056b3;
         }
+
         @media (max-width: 992px) {
             .car-card {
                 width: calc(50% - 15px);
             }
         }
+
         @media (max-width: 576px) {
             .car-card {
                 width: 100%;
             }
         }
     </style>
+
 </head>
 <body>
 <h1>Available Cars</h1>
@@ -76,7 +95,7 @@
     <form method="get">
         <label>Brand:
             <select name="brand">
-                <option value="">All</option>
+                <option value="">All</option>x
                 <c:forEach items="${brands}" var="carBrand">
                     <option value="${carBrand}" ${param.brand == carBrand ? 'selected' : ''}>${carBrand}</option>
                 </c:forEach>
@@ -106,7 +125,16 @@
 <div class="car-list">
     <c:forEach items="${cars}" var="car">
         <div class="car-card">
-            <img src="${car.imagePath}" alt="${car.brand} ${car.model}">
+            <div class="car-img">
+                <c:choose>
+                    <c:when test="${not empty car.imageUrl}">
+                        <img src="${car.imageUrl}" alt="${car.brand} + ${car.model}"/></a>
+                    </c:when>
+                    <c:otherwise>
+                        <span>No image</span>
+                    </c:otherwise>
+                </c:choose>
+            </div>
             <h3>${car.brand} ${car.model} (${car.year})</h3>
             <p>License: ${car.licensePlate}</p>
             <p>Color: ${car.color}</p>
@@ -115,5 +143,7 @@
         </div>
     </c:forEach>
 </div>
+
+
 </body>
 </html>
