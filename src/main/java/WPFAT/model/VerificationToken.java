@@ -1,6 +1,7 @@
 package WPFAT.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,9 @@ public class VerificationToken {
     @OneToOne
     @JoinColumn(nullable = false, name = "user_id")
     private AppUser user;
+
+    @CreationTimestamp
+    private LocalDateTime createdDate;
 
     private LocalDateTime expiryDate;
 
@@ -44,6 +48,8 @@ public class VerificationToken {
     public void setUser(AppUser user) {
         this.user = user;
     }
+
+    public LocalDateTime getCreatedDate() {return createdDate;}
 
     public LocalDateTime getExpiryDate() {
         return expiryDate;
