@@ -67,4 +67,10 @@ public class OrderServiceImpl implements OrderService {
         return !orderRepository.existsByCarIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
                 carId, endDate, startDate);
     }
+
+    @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
 }

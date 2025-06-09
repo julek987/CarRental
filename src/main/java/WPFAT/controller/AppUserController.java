@@ -26,7 +26,7 @@ public class AppUserController {
                                Model model) {
         List<AppUser> filteredUsers = appUserService.listAppUsersByLoginAndRole(login, role);
         model.addAttribute("users", filteredUsers);
-        return "users";
+        return "admin-panel";
     }
 
     @GetMapping("/add")

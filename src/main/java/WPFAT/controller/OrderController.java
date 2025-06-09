@@ -68,4 +68,35 @@ public class OrderController {
         Order savedOrder = orderService.createOrder(order);
         return "redirect:/payments/" + savedOrder.getId();
     }
+
+    @GetMapping("/manage")
+    public String listOrders(Model model) {
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("statuses", OrderStatus.values());
+        model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
+        return "order-manage";
+    }
+
+    @PostMapping("/update")
+    public String updateOrder(@RequestParam Long orderId,
+                              @RequestParam OrderStatus status,
+                              @RequestParam Long pickupLocationId,
+                              @RequestParam Long returnLocationId,
+                              RedirectAttributes redirectAttributes) {
+        Order order = orderService.getOrderById(orderId);
+        order.setStatus(status);
+        order.setPickupLocation(pickupLocationService.getById(pickupLocationId));
+        order.setReturnLocation(pickupLocationService.getById(returnLocationId));
+        orderService.updateOrder(order);
+        redirectAttributes.addFlashAttribute("message", "Order updated successfully.");
+        return "redirect:/orders/manage";
+    }
+
+    @PostMapping("/delete/{orderId}")
+    public String deleteOrder(@PathVariable Long orderId, RedirectAttributes redirectAttributes) {
+        orderService.cancelOrder(orderId);
+        redirectAttributes.addFlashAttribute("message", "Order deleted successfully.");
+        return "redirect:/orders/manage";
+    }
+
 }

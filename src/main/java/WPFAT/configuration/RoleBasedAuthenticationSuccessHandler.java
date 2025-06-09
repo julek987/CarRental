@@ -27,6 +27,9 @@ public class RoleBasedAuthenticationSuccessHandler implements AuthenticationSucc
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 response.sendRedirect("/admin/users");
                 return;
+            }if (authority.getAuthority().equals("ROLE_MANAGER")) {
+                response.sendRedirect("/orders/manage");
+                return;
             }
         }
 

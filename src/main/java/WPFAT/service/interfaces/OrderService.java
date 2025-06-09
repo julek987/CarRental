@@ -11,6 +11,7 @@ public interface OrderService {
     Order getOrderById(Long id);
     Order updateOrder(Order order);
     List<Order> getOrdersByUser(AppUser user);
+    List<Order> getAllOrders();
     void cancelOrder(Long orderId);
     boolean isCarAvailable(Long carId, LocalDate startDate, LocalDate endDate);
 }
