@@ -1,5 +1,6 @@
 package WPFAT.model;
 
+import WPFAT.model.enums.UserRole;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 

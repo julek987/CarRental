@@ -1,5 +1,7 @@
 package WPFAT.model;
 
+import WPFAT.model.enums.OrderStatus;
+import WPFAT.model.enums.PaymentMethod;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;

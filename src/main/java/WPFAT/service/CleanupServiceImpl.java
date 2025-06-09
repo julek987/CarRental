@@ -2,7 +2,7 @@ package WPFAT.service;
 
 import WPFAT.model.AppUser;
 import WPFAT.model.Order;
-import WPFAT.model.OrderStatus;
+import WPFAT.model.enums.OrderStatus;
 import WPFAT.model.VerificationToken;
 import WPFAT.repository.OrderRepository;
 import WPFAT.repository.VerificationTokenRepository;

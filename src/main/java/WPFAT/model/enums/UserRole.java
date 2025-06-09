@@ -1,4 +1,4 @@
-package WPFAT.model;
+package WPFAT.model.enums;
 
 public enum UserRole {
     ADMIN,

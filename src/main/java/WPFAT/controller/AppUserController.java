@@ -26,13 +26,13 @@ public class AppUserController {
                                Model model) {
         List<AppUser> filteredUsers = appUserService.listAppUsersByLoginAndRole(login, role);
         model.addAttribute("users", filteredUsers);
-        return "admin-panel";
+        return "adminPanel/admin-panel-users";
     }
 
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("user", new AppUser());
-        return "add-user";
+        return "adminPanel/admin-panel-add-user";
     }
 
     @PostMapping("/add")
@@ -45,7 +45,7 @@ public class AppUserController {
     public String showEditForm(@PathVariable long id, Model model) {
         AppUser user = appUserService.getAppUserById(id);
         model.addAttribute("user", user);
-        return "edit-user";
+        return "adminPanel/admin-panel-edit-user";
     }
 
     @PostMapping("/edit/{id}")

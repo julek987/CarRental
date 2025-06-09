@@ -1,8 +1,8 @@
 package WPFAT.controller;
 
 import WPFAT.model.Order;
-import WPFAT.model.OrderStatus;
-import WPFAT.model.PaymentMethod;
+import WPFAT.model.enums.OrderStatus;
+import WPFAT.model.enums.PaymentMethod;
 import WPFAT.service.interfaces.EmailService;
 import WPFAT.service.interfaces.OrderService;
 import WPFAT.service.interfaces.PdfService;

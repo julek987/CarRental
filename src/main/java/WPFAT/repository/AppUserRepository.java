@@ -1,7 +1,7 @@
 package WPFAT.repository;
 
 import WPFAT.model.AppUser;
-import WPFAT.model.UserRole;
+import WPFAT.model.enums.UserRole;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

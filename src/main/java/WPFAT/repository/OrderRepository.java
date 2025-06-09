@@ -2,7 +2,7 @@ package WPFAT.repository;
 
 import WPFAT.model.Order;
 import WPFAT.model.AppUser;
-import WPFAT.model.OrderStatus;
+import WPFAT.model.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

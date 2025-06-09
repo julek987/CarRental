@@ -100,7 +100,7 @@ public class CarController {
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("maxDate", LocalDate.now().plusMonths(3));
         model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
-        return "car-details";
+        return "car-order";
     }
 
     @GetMapping("/admin/manage")
@@ -129,7 +129,7 @@ public class CarController {
                 .sorted(String.CASE_INSENSITIVE_ORDER)
                 .toList());
 
-        return "car-admin-list";
+        return "adminPanel/admin-panel-cars";
     }
 
 
@@ -137,7 +137,7 @@ public class CarController {
     public String editCarForm(@PathVariable Long id, Model model) {
         Car car = carService.getCarById(id);
         model.addAttribute("car", car);
-        return "car-admin-edit";
+        return "adminPanel/admin-panel-car-edit";
     }
 
     @PostMapping("/admin/edit")
@@ -149,7 +149,7 @@ public class CarController {
     @GetMapping("/admin/add")
     public String addCarForm(Model model) {
         model.addAttribute("car", new Car());
-        return "car-admin-edit";
+        return "adminPanel/admin-panel-car-edit";
     }
 
     @GetMapping("/admin/delete/{id}")

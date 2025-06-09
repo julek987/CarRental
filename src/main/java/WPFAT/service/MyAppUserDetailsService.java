@@ -1,7 +1,7 @@
 package WPFAT.service;
 
 import WPFAT.model.AppUser;
-import WPFAT.model.UserRole;
+import WPFAT.model.enums.UserRole;
 import WPFAT.service.interfaces.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

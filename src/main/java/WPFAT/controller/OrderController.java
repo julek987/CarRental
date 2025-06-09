@@ -1,6 +1,7 @@
 package WPFAT.controller;
 
 import WPFAT.model.*;
+import WPFAT.model.enums.OrderStatus;
 import WPFAT.service.interfaces.AppUserService;
 import WPFAT.service.interfaces.CarService;
 import WPFAT.service.interfaces.OrderService;
@@ -40,7 +41,7 @@ public class OrderController {
         model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("maxDate", LocalDate.now().plusMonths(3));
-        return "order-form";
+        return "car-order";
     }
 
     @PostMapping
@@ -74,7 +75,7 @@ public class OrderController {
         model.addAttribute("orders", orderService.getAllOrders());
         model.addAttribute("statuses", OrderStatus.values());
         model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
-        return "order-manage";
+        return "adminPanel/admin-panel-orders";
     }
 
     @PostMapping("/update")
