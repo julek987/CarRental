@@ -77,6 +77,13 @@ public class OrderController {
         model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
         return "adminPanel/admin-panel-orders";
     }
+    @GetMapping("/manager/manage")
+    public String listOrdersManager(Model model) {
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("statuses", OrderStatus.values());
+        model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
+        return "managerPanel/manager-panel-orders";
+    }
 
     @PostMapping("/update")
     public String updateOrder(@RequestParam Long orderId,
@@ -93,11 +100,33 @@ public class OrderController {
         return "redirect:/orders/manage";
     }
 
+    @PostMapping("/update/manager")
+    public String updateOrderManager(@RequestParam Long orderId,
+                              @RequestParam OrderStatus status,
+                              @RequestParam Long pickupLocationId,
+                              @RequestParam Long returnLocationId,
+                              RedirectAttributes redirectAttributes) {
+        Order order = orderService.getOrderById(orderId);
+        order.setStatus(status);
+        order.setPickupLocation(pickupLocationService.getById(pickupLocationId));
+        order.setReturnLocation(pickupLocationService.getById(returnLocationId));
+        orderService.updateOrder(order);
+        redirectAttributes.addFlashAttribute("message", "Order updated successfully.");
+        return "redirect:/orders/manager/manage";
+    }
+
     @PostMapping("/delete/{orderId}")
     public String deleteOrder(@PathVariable Long orderId, RedirectAttributes redirectAttributes) {
         orderService.cancelOrder(orderId);
         redirectAttributes.addFlashAttribute("message", "Order deleted successfully.");
         return "redirect:/orders/manage";
+    }
+
+    @PostMapping("/manager/delete/{orderId}")
+    public String deleteOrderManager(@PathVariable Long orderId, RedirectAttributes redirectAttributes) {
+        orderService.cancelOrder(orderId);
+        redirectAttributes.addFlashAttribute("message", "Order deleted successfully.");
+        return "redirect:/orders/manager/manage";
     }
 
 }

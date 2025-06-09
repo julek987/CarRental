@@ -132,12 +132,47 @@ public class CarController {
         return "adminPanel/admin-panel-cars";
     }
 
+    @GetMapping("/manager")
+    public String manageCars2(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String sort,
+            Model model) {
+
+        List<Car> cars = carService.getAllCars();
+
+        if (brand != null && !brand.isEmpty()) {
+            cars = cars.stream()
+                    .filter(car -> car.getBrand().equalsIgnoreCase(brand))
+                    .toList();
+        }
+
+        if (sort != null && !sort.isEmpty()) {
+            cars = sortCars(cars, sort);
+        }
+
+        model.addAttribute("cars", cars);
+        model.addAttribute("brands", carService.getAllCars().stream()
+                .map(Car::getBrand)
+                .filter(b -> b != null && !b.isBlank())
+                .distinct()
+                .sorted(String.CASE_INSENSITIVE_ORDER)
+                .toList());
+
+        return "managerPanel/manager-panel-cars";
+    }
+
 
     @GetMapping("/admin/edit/{id}")
     public String editCarForm(@PathVariable Long id, Model model) {
         Car car = carService.getCarById(id);
         model.addAttribute("car", car);
         return "adminPanel/admin-panel-car-edit";
+    }
+    @GetMapping("/manager/edit/{id}")
+    public String editCarFormManager(@PathVariable Long id, Model model) {
+        Car car = carService.getCarById(id);
+        model.addAttribute("car", car);
+        return "managerPanel/manager-panel-car-edit";
     }
 
     @PostMapping("/admin/edit")
@@ -146,13 +181,25 @@ public class CarController {
         return "redirect:/cars/admin/manage";
     }
 
+    @PostMapping("/manager/edit")
+    public String updateCar2(@ModelAttribute Car car) {
+        carService.saveCar(car);
+        return "redirect:/cars/manager";
+    }
+
     @GetMapping("/admin/add")
     public String addCarForm(Model model) {
         model.addAttribute("car", new Car());
         return "adminPanel/admin-panel-car-edit";
     }
 
-    @GetMapping("/admin/delete/{id}")
+    @GetMapping("/manager/add")
+    public String addCarFormManager(Model model) {
+        model.addAttribute("car", new Car());
+        return "managerPanel/manager-panel-car-edit";
+    }
+
+    @GetMapping("/delete/{id}")
     public String deleteCar(@PathVariable Long id) {
         carService.deleteCarById(id);
         return "redirect:/cars/admin/manage";
