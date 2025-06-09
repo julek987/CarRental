@@ -1,8 +1,10 @@
 package WPFAT.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
@@ -46,6 +48,10 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method")
     private PaymentMethod paymentMethod;
+
+    @Column(name = "created_date", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdDate;
 
     public Long getId() {
         return id;
@@ -126,4 +132,6 @@ public class Order {
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+
+    public LocalDateTime getCreatedDate() {return createdDate;}
 }
