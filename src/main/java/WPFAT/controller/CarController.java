@@ -1,5 +1,6 @@
 package WPFAT.controller;
 
+import WPFAT.model.CalendarDay;
 import WPFAT.model.Car;
 import WPFAT.service.interfaces.CarService;
 import WPFAT.service.interfaces.PickupLocationService;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
 
@@ -94,13 +96,65 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public String showCarDetails(@PathVariable Long id, Model model) {
+    public String showCarDetails(
+            @PathVariable Long id,
+            @RequestParam(required = false, defaultValue = "0") int monthOffset,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
+            Model model) {
+
         Car car = carService.getCarById(id);
+        LocalDate today = LocalDate.now();
+        LocalDate currentMonth = today.plusMonths(monthOffset);
+        LocalDate maxDate = today.plusMonths(3);
+
+        // Generate calendar data for the current month
+        List<CalendarDay> calendarDays = generateCalendarDays(currentMonth, car);
+
         model.addAttribute("car", car);
-        model.addAttribute("today", LocalDate.now());
-        model.addAttribute("maxDate", LocalDate.now().plusMonths(3));
+        model.addAttribute("today", today);
+        model.addAttribute("currentMonth", currentMonth);
+        model.addAttribute("monthOffset", monthOffset);
+        model.addAttribute("maxDate", maxDate);
         model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
+        model.addAttribute("calendarDays", calendarDays);
+        model.addAttribute("selectedStartDate", startDate);
+        model.addAttribute("selectedEndDate", endDate);
+
         return "car-order";
+    }
+
+    private List<CalendarDay> generateCalendarDays(LocalDate month, Car car) {
+        List<CalendarDay> days = new ArrayList<>();
+        List<LocalDate> bookedDates = carService.getBookedDatesForCar(car.getId());
+
+        // Get the first day of the month
+        LocalDate firstDayOfMonth = month.withDayOfMonth(1);
+
+        // Find out how many days from previous month we need to show
+        int daysFromPrevMonth = firstDayOfMonth.getDayOfWeek().getValue() % 7; // Sunday=0
+
+        // Start from the first day to show in calendar (might be from previous month)
+        LocalDate currentDate = firstDayOfMonth.minusDays(daysFromPrevMonth);
+
+        // Generate exactly 6 weeks of calendar data (42 days - covers all cases)
+        for (int i = 0; i < 42; i++) {
+            LocalDate date = currentDate.plusDays(i);
+            boolean isAvailable = !bookedDates.contains(date);
+            boolean isToday = date.equals(LocalDate.now());
+            boolean isCurrentMonth = date.getMonth() == month.getMonth();
+
+            days.add(new CalendarDay(
+                    date.getDayOfMonth(),
+                    date,
+                    date.getDayOfWeek().getValue() % 7, // Sunday=0
+                    isAvailable,
+                    isToday,
+                    isCurrentMonth
+            ));
+        }
+
+        return days;
     }
 
     @GetMapping("/admin/manage")
