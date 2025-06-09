@@ -102,4 +102,60 @@ public class CarController {
         model.addAttribute("locations", pickupLocationService.getAllActiveLocations());
         return "car-details";
     }
+
+    @GetMapping("/admin/manage")
+    public String manageCars(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String sort,
+            Model model) {
+
+        List<Car> cars = carService.getAllCars();
+
+        if (brand != null && !brand.isEmpty()) {
+            cars = cars.stream()
+                    .filter(car -> car.getBrand().equalsIgnoreCase(brand))
+                    .toList();
+        }
+
+        if (sort != null && !sort.isEmpty()) {
+            cars = sortCars(cars, sort);
+        }
+
+        model.addAttribute("cars", cars);
+        model.addAttribute("brands", carService.getAllCars().stream()
+                .map(Car::getBrand)
+                .filter(b -> b != null && !b.isBlank())
+                .distinct()
+                .sorted(String.CASE_INSENSITIVE_ORDER)
+                .toList());
+
+        return "car-admin-list";
+    }
+
+
+    @GetMapping("/admin/edit/{id}")
+    public String editCarForm(@PathVariable Long id, Model model) {
+        Car car = carService.getCarById(id);
+        model.addAttribute("car", car);
+        return "car-admin-edit";
+    }
+
+    @PostMapping("/admin/edit")
+    public String updateCar(@ModelAttribute Car car) {
+        carService.saveCar(car);
+        return "redirect:/cars/admin/manage";
+    }
+
+    @GetMapping("/admin/add")
+    public String addCarForm(Model model) {
+        model.addAttribute("car", new Car());
+        return "car-admin-edit";
+    }
+
+    @GetMapping("/admin/delete/{id}")
+    public String deleteCar(@PathVariable Long id) {
+        carService.deleteCarById(id);
+        return "redirect:/cars/admin/manage";
+    }
+
 }

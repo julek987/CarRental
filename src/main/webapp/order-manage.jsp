@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -38,7 +39,7 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            table-layout: fixed; /* Added to control column widths */
+            table-layout: fixed;
         }
         th, td {
             border: 1px solid #ddd;
@@ -93,6 +94,7 @@
     <div class="nav-links">
         <a href="${pageContext.request.contextPath}/admin/users">Users</a>
         <a href="${pageContext.request.contextPath}/orders/manage" class="active">Orders</a>
+        <a href="${pageContext.request.contextPath}/cars/admin/manage">Cars</a>
         <a href="?lang=pl">PL</a>
         <a href="?lang=en">EN</a>
         <form:form action="/logout" method="post" class="logout-form" style="display:inline;">

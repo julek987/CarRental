@@ -43,4 +43,10 @@ public class CarServiceImpl implements CarService {
     public void deleteCar(Long id) {
         carRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteCarById(Long id) {
+        Car car = getCarById(id);
+        carRepository.delete(car);
+    }
 }

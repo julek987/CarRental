@@ -66,6 +66,7 @@
   <div class="nav-links">
     <a href="${pageContext.request.contextPath}/admin/users" class="active">Users</a>
     <a href="${pageContext.request.contextPath}/orders/manage">Orders</a>
+    <a href="${pageContext.request.contextPath}/cars/admin/manage">Cars</a>
     <a href="?lang=pl">PL</a>
     <a href="?lang=en">EN</a>
     <form:form action="/logout" method="post" class="logout-form" style="display:inline;">

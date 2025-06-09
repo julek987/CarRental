@@ -9,4 +9,5 @@ public interface CarService {
     List<Car> getAvailableCars();
     Car saveCar(Car car);
     void deleteCar(Long id);
+    void deleteCarById(Long id);
 }
