@@ -11,6 +11,12 @@
     .form-group { margin-bottom: 15px; }
     label { display: block; margin-bottom: 5px; }
     select, input[type="date"] { width: 200px; padding: 8px; }
+    .car-img img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -18,7 +24,14 @@
 
 <div class="car-details">
   <div class="car-img">
-    [IMAGE PLACEHOLDER FOR ${car.brand} ${car.model}]
+    <c:choose>
+      <c:when test="${not empty car.imageUrl}">
+        <img src="${car.imageUrl}" alt="${car.brand} + ${car.model}"/></a>
+      </c:when>
+      <c:otherwise>
+        <span>No image</span>
+      </c:otherwise>
+    </c:choose>
   </div>
   <div>
     <p><strong>Year:</strong> ${car.year}</p>
