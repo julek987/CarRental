@@ -128,6 +128,21 @@
     h4 {
       font-size: 1.2rem;
     }
+    .total-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #28a745;
+      margin-top: 10px;
+      padding: 8px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .invalid-range {
+      color: #dc3545;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
@@ -279,8 +294,32 @@
               </select>
             </div>
 
+            <!-- Total Price Calculation -->
+            <c:if test="${not empty selectedStartDate and not empty selectedEndDate}">
+              <c:set var="daysBetween" value="${java.time.temporal.ChronoUnit.DAYS.between(selectedStartDate, selectedEndDate)}" />
+              <c:set var="totalPrice" value="${daysBetween * car.dailyCost}" />
+              <div class="col-12 total-price">
+                Total for ${daysBetween} day(s): $<fmt:formatNumber value="${totalPrice}" pattern="#,##0.00"/>
+              </div>
+
+              <!-- Check for unavailable days in range -->
+              <c:set var="hasUnavailableDays" value="false" />
+              <c:forEach items="${calendarDays}" var="dayInfo">
+                <c:if test="${dayInfo.date.isAfter(selectedStartDate.minusDays(1)) and dayInfo.date.isBefore(selectedEndDate.plusDays(1)) and not dayInfo.available}">
+                  <c:set var="hasUnavailableDays" value="true" />
+                </c:if>
+              </c:forEach>
+
+              <c:if test="${hasUnavailableDays}">
+                <div class="col-12 invalid-range">
+                  <i class="bi bi-exclamation-triangle"></i> Your selected range includes unavailable days. Please adjust your dates.
+                </div>
+              </c:if>
+            </c:if>
+
             <div class="col-12 mt-3">
-              <button type="submit" class="btn btn-primary btn-sm w-100">
+              <button type="submit" class="btn btn-primary btn-sm w-100"
+                      <c:if test="${hasUnavailableDays}">disabled</c:if>>
                 <i class="bi bi-check-circle"></i> Confirm Reservation
               </button>
             </div>
@@ -294,18 +333,69 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+  // Get all booked dates from the calendar
+  const bookedDates = [];
+  <c:forEach items="${calendarDays}" var="dayInfo">
+  <c:if test="${not dayInfo.available}">
+  bookedDates.push("${dayInfo.date}");
+  </c:if>
+  </c:forEach>
+
   flatpickr("#startDate", {
     minDate: "today",
     maxDate: new Date().fp_incr(90),
     onChange: function(selectedDates, dateStr) {
       const endDatePicker = document.querySelector("#endDate")._flatpickr;
       endDatePicker.set("minDate", dateStr);
+
+      // Check if the selected range includes any unavailable dates
+      checkDateRangeValidity();
     }
   });
 
   flatpickr("#endDate", {
     minDate: "today",
-    maxDate: new Date().fp_incr(90)
+    maxDate: new Date().fp_incr(90),
+    onChange: function() {
+      checkDateRangeValidity();
+    }
+  });
+
+  function checkDateRangeValidity() {
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+    const submitButton = document.querySelector("form button[type='submit']");
+
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    let hasUnavailableDays = false;
+
+    // Check each day in the range
+    for (let dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
+      const dateStr = dt.toISOString().split('T')[0];
+      if (bookedDates.includes(dateStr)) {
+        hasUnavailableDays = true;
+        break;
+      }
+    }
+
+    // Disable submit button if range is invalid
+    submitButton.disabled = hasUnavailableDays;
+
+    // Show/hide warning message
+    const warningElement = document.querySelector(".invalid-range");
+    if (warningElement) {
+      warningElement.style.display = hasUnavailableDays ? "block" : "none";
+    }
+  }
+
+  // Initialize check on page load
+  document.addEventListener("DOMContentLoaded", function() {
+    checkDateRangeValidity();
   });
 </script>
 </body>
