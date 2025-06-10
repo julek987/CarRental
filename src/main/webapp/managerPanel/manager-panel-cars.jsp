@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -63,14 +64,14 @@
 </head>
 <body>
 <div class="navbar">
-    <h1>Manager Panel</h1>
+    <h1><spring:message code="manager.panel"/></h1>
     <div class="nav-links">
-        <a href="${pageContext.request.contextPath}/orders/manager/manage">Orders</a>
-        <a href="${pageContext.request.contextPath}/cars/manager" class="active">Cars</a>
-        <a href="?lang=pl">PL</a>
-        <a href="?lang=en">EN</a>
+        <a href="${pageContext.request.contextPath}/orders/manager/manage"><spring:message code="nav.orders"/></a>
+        <a href="${pageContext.request.contextPath}/cars/manager" class="active"><spring:message code="nav.cars"/></a>
+        <a href="?lang=pl"><spring:message code="nav.language.pl"/></a>
+        <a href="?lang=en"><spring:message code="nav.language.en"/></a>
         <form:form action="/logout" method="post" class="logout-form">
-            <button type="submit">Logout</button>
+            <button type="submit"><spring:message code="button.logout"/></button>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form:form>
     </div>
@@ -79,7 +80,7 @@
 <div class="filter-box mb-3">
     <form method="get" class="filter-form d-flex flex-wrap gap-3 align-items-end">
         <div>
-            <label for="brand">Brand:</label>
+            <label for="brand"><spring:message code="filter.brand.label"/></label>
             <select name="brand" id="brand" class="form-select">
                 <option value="">All</option>
                 <c:forEach items="${brands}" var="carBrand">
@@ -89,44 +90,43 @@
         </div>
 
         <div>
-            <label for="sort">Sort by:</label>
+            <label for="sort"><spring:message code="filter.sort.label"/></label>
             <select name="sort" id="sort" class="form-select">
-                <option value="">Default</option>
-                <option value="brand_asc" ${param.sort == 'brand_asc' ? 'selected' : ''}>Brand (A-Z)</option>
-                <option value="brand_desc" ${param.sort == 'brand_desc' ? 'selected' : ''}>Brand (Z-A)</option>
-                <option value="price_asc" ${param.sort == 'price_asc' ? 'selected' : ''}>Price (Low to High)</option>
-                <option value="price_desc" ${param.sort == 'price_desc' ? 'selected' : ''}>Price (High to Low)</option>
-                <option value="year_asc" ${param.sort == 'year_asc' ? 'selected' : ''}>Year (Oldest)</option>
-                <option value="year_desc" ${param.sort == 'year_desc' ? 'selected' : ''}>Year (Newest)</option>
+                <option value=""><spring:message code="filter.sort.default"/></option>
+                <option value="brand_asc" ${param.sort == 'brand_asc' ? 'selected' : ''}><spring:message code="filter.sort.brand_asc"/></option>
+                <option value="brand_desc" ${param.sort == 'brand_desc' ? 'selected' : ''}><spring:message code="filter.sort.brand_desc"/></option>
+                <option value="price_asc" ${param.sort == 'price_asc' ? 'selected' : ''}><spring:message code="filter.sort.price_asc"/></option>
+                <option value="price_desc" ${param.sort == 'price_desc' ? 'selected' : ''}><spring:message code="filter.sort.price_desc"/></option>
+                <option value="year_asc" ${param.sort == 'year_asc' ? 'selected' : ''}><spring:message code="filter.sort.year_asc"/></option>
+                <option value="year_desc" ${param.sort == 'year_desc' ? 'selected' : ''}><spring:message code="filter.sort.year_desc"/></option>
             </select>
         </div>
 
         <div>
-            <button type="submit" class="btn btn-primary">Filter</button>
-            <a href="${pageContext.request.contextPath}/cars/manager" class="btn btn-secondary">Reset</a>
+            <button type="submit" class="btn btn-primary"><spring:message code="button.filter"/></button>
+            <a href="${pageContext.request.contextPath}/cars/manager" class="btn btn-secondary"><spring:message code="button.reset"/></a>
         </div>
     </form>
 </div>
 
-
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Manage Cars</h2>
-        <a class="btn btn-success" href="${pageContext.request.contextPath}/cars/manager/add">Add New Car</a>
+        <h2><spring:message code="car.management.title"/></h2>
+        <a class="btn btn-success" href="${pageContext.request.contextPath}/cars/manager/add"><spring:message code="car.add.button"/></a>
     </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle">
             <thead class="table-dark">
             <tr>
-                <th>ID</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Year</th>
-                <th>License</th>
-                <th>Color</th>
-                <th>Cost</th>
-                <th style="width: 150px;">Actions</th>
+                <th><spring:message code="table.header.id"/></th>
+                <th><spring:message code="table.header.brand"/></th>
+                <th><spring:message code="table.header.model"/></th>
+                <th><spring:message code="table.header.year"/></th>
+                <th><spring:message code="table.header.license"/></th>
+                <th><spring:message code="table.header.color"/></th>
+                <th><spring:message code="table.header.cost"/></th>
+                <th style="width: 150px;"><spring:message code="table.header.actions"/></th>
             </tr>
             </thead>
             <tbody>
@@ -140,9 +140,14 @@
                     <td>${car.color}</td>
                     <td>$${car.dailyCost}</td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/cars/manager/edit/${car.id}">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="${pageContext.request.contextPath}/cars/delete/${car.id}"
-                           onclick="return confirm('Are you sure you want to delete this car?')">Delete</a>
+                        <a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/cars/manager/edit/${car.id}">
+                            <spring:message code="car.edit.button"/>
+                        </a>
+                        <a class="btn btn-sm btn-danger"
+                           href="${pageContext.request.contextPath}/cars/delete/${car.id}"
+                           onclick="return confirm('<spring:message code="car.delete.confirm"/>')">
+                            <spring:message code="car.delete.button"/>
+                        </a>
                     </td>
                 </tr>
             </c:forEach>
@@ -150,5 +155,6 @@
         </table>
     </div>
 </div>
+
 </body>
 </html>

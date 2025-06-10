@@ -1,11 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Manage Orders</title>
+    <title><spring:message code="admin.panel.title"/></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
@@ -90,15 +90,15 @@
 </head>
 <body>
 <div class="navbar">
-    <h1>Admin Panel</h1>
+    <h1><spring:message code="admin.panel.title"/></h1>
     <div class="nav-links">
-        <a href="${pageContext.request.contextPath}/admin/users">Users</a>
-        <a href="${pageContext.request.contextPath}/orders/manage" class="active">Orders</a>
-        <a href="${pageContext.request.contextPath}/cars/admin/manage">Cars</a>
+        <a href="${pageContext.request.contextPath}/admin/users"><spring:message code="nav.users"/></a>
+        <a href="${pageContext.request.contextPath}/orders/manage" class="active"><spring:message code="nav.orders"/></a>
+        <a href="${pageContext.request.contextPath}/cars/admin/manage"><spring:message code="nav.cars"/></a>
         <a href="?lang=pl">PL</a>
         <a href="?lang=en">EN</a>
         <form:form action="/logout" method="post" class="logout-form" style="display:inline;">
-            <button type="submit">Logout</button>
+            <button type="submit"><spring:message code="button.logout"/></button>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form:form>
     </div>
@@ -111,13 +111,13 @@
 <table class="table table-bordered table-hover">
     <thead class="table-light">
     <tr>
-        <th>ID</th>
-        <th>User</th>
-        <th>Car</th>
-        <th>Status</th>
-        <th>Pickup Location</th>
-        <th>Return Location</th>
-        <th>Actions</th>
+        <th><spring:message code="orders.table.id"/></th>
+        <th><spring:message code="orders.table.user"/></th>
+        <th><spring:message code="orders.table.car"/></th>
+        <th><spring:message code="orders.table.status"/></th>
+        <th><spring:message code="orders.table.pickupLocation"/></th>
+        <th><spring:message code="orders.table.returnLocation"/></th>
+        <th><spring:message code="orders.table.actions"/></th>
     </tr>
     </thead>
     <tbody>
@@ -131,7 +131,9 @@
                 <td>
                     <select class="form-select form-select-sm compact-select" name="status">
                         <c:forEach var="status" items="${statuses}">
-                            <option value="${status}" ${status == order.status ? 'selected' : ''}>${status}</option>
+                            <option value="${status}" ${status == order.status ? 'selected' : ''}>
+                                <spring:message code="order.status.${status}" text="${status}"/>
+                            </option>
                         </c:forEach>
                     </select>
                 </td>
@@ -154,11 +156,11 @@
                     </select>
                 </td>
                 <td class="d-flex gap-2">
-                    <button class="btn btn-sm btn-primary" type="submit">Update</button>
+                    <button class="btn btn-sm btn-primary" type="submit"><spring:message code="button.update"/></button>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
             <form method="post" action="${pageContext.request.contextPath}/orders/delete/${order.id}">
-                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                <button class="btn btn-sm btn-danger" type="submit"><spring:message code="button.delete"/></button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
             </td>

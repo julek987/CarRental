@@ -1,11 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Manage Orders</title>
+    <title><spring:message code="order.management.title"/></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
@@ -68,9 +69,8 @@
             border: none;
             cursor: pointer;
         }
-        /* New styles for dropdown controls */
         .compact-select {
-            max-width: 150px; /* Adjust as needed */
+            max-width: 150px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -78,26 +78,25 @@
         .compact-select option {
             padding: 3px 8px;
         }
-        /* Column width adjustments */
-        td:nth-child(1) { width: 5%; }  /* ID */
-        td:nth-child(2) { width: 10%; } /* User */
-        td:nth-child(3) { width: 15%; } /* Car */
-        td:nth-child(4) { width: 12%; } /* Status */
-        td:nth-child(5) { width: 15%; } /* Pickup */
-        td:nth-child(6) { width: 15%; } /* Return */
-        td:nth-child(7) { width: 15%; } /* Actions */
+        td:nth-child(1) { width: 5%; }
+        td:nth-child(2) { width: 10%; }
+        td:nth-child(3) { width: 15%; }
+        td:nth-child(4) { width: 12%; }
+        td:nth-child(5) { width: 15%; }
+        td:nth-child(6) { width: 15%; }
+        td:nth-child(7) { width: 15%; }
     </style>
 </head>
 <body>
 <div class="navbar">
-    <h1>Manager Panel</h1>
+    <h1><spring:message code="manager.panel"/></h1>
     <div class="nav-links">
-        <a href="${pageContext.request.contextPath}/orders/manager/manage" class="active">Orders</a>
-        <a href="${pageContext.request.contextPath}/cars/manager">Cars</a>
-        <a href="?lang=pl">PL</a>
-        <a href="?lang=en">EN</a>
+        <a href="${pageContext.request.contextPath}/orders/manager/manage" class="active"><spring:message code="nav.orders"/></a>
+        <a href="${pageContext.request.contextPath}/cars/manager"><spring:message code="nav.cars"/></a>
+        <a href="?lang=pl"><spring:message code="nav.language.pl"/></a>
+        <a href="?lang=en"><spring:message code="nav.language.en"/></a>
         <form:form action="/logout" method="post" class="logout-form" style="display:inline;">
-            <button type="submit">Logout</button>
+            <button type="submit"><spring:message code="button.logout"/></button>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form:form>
     </div>
@@ -110,13 +109,13 @@
 <table class="table table-bordered table-hover">
     <thead class="table-light">
     <tr>
-        <th>ID</th>
-        <th>User</th>
-        <th>Car</th>
-        <th>Status</th>
-        <th>Pickup Location</th>
-        <th>Return Location</th>
-        <th>Actions</th>
+        <th><spring:message code="table.header.id"/></th>
+        <th><spring:message code="table.header.user"/></th>
+        <th><spring:message code="table.header.car"/></th>
+        <th><spring:message code="table.header.status"/></th>
+        <th><spring:message code="table.header.pickup"/></th>
+        <th><spring:message code="table.header.return"/></th>
+        <th><spring:message code="table.header.actions"/></th>
     </tr>
     </thead>
     <tbody>
@@ -153,11 +152,11 @@
                     </select>
                 </td>
                 <td class="d-flex gap-2">
-                    <button class="btn btn-sm btn-primary" type="submit">Update</button>
+                    <button class="btn btn-sm btn-primary" type="submit"><spring:message code="order.update.button"/></button>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
             <form method="post" action="${pageContext.request.contextPath}/orders/manager/delete/${order.id}">
-                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                <button class="btn btn-sm btn-danger" type="submit"><spring:message code="order.delete.button"/></button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
             </td>
