@@ -109,6 +109,14 @@ public class CarController {
         LocalDate currentMonth = today.plusMonths(monthOffset);
         LocalDate maxDate = today.plusMonths(3);
 
+        // Ensure start date is before end date
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            // Swap them if they're in wrong order
+            LocalDate temp = startDate;
+            startDate = endDate;
+            endDate = temp;
+        }
+
         // Generate calendar data for the current month
         List<CalendarDay> calendarDays = generateCalendarDays(currentMonth, car);
 
@@ -135,6 +143,7 @@ public class CarController {
     private List<CalendarDay> generateCalendarDays(LocalDate month, Car car) {
         List<CalendarDay> days = new ArrayList<>();
         List<LocalDate> bookedDates = carService.getBookedDatesForCar(car.getId());
+        LocalDate today = LocalDate.now();
 
         // Get the first day of the month
         LocalDate firstDayOfMonth = month.withDayOfMonth(1);
@@ -148,8 +157,10 @@ public class CarController {
         // Generate exactly 6 weeks of calendar data (42 days - covers all cases)
         for (int i = 0; i < 42; i++) {
             LocalDate date = currentDate.plusDays(i);
-            boolean isAvailable = !bookedDates.contains(date);
-            boolean isToday = date.equals(LocalDate.now());
+            boolean isPastDate = date.isBefore(today);
+            boolean isBooked = bookedDates.contains(date);
+            boolean isAvailable = !isPastDate && !isBooked;
+            boolean isToday = date.equals(today);
             boolean isCurrentMonth = date.getMonth() == month.getMonth();
 
             days.add(new CalendarDay(
