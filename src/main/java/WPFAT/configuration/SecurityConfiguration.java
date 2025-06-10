@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/manager/**").hasRole("MANAGER")
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/orders/**").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/api/**").hasAnyRole("ADMIN", "MANAGER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

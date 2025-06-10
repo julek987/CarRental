@@ -13,4 +13,6 @@ public interface AppUserService {
     public AppUser getAppUserByLogin(String login);
     public List<AppUser> listAppUsers();
     List<AppUser> listAppUsersByLoginAndRole(String login, String role);
+
+    List<AppUser> getUsersByRole(String roleUser);
 }

@@ -45,6 +45,7 @@ public class AppUserServiceImpl implements AppUserService {
         return appUserRepository.findById(id);
     }
 
+
     @Override
     public AppUser getAppUserByLogin(String login) {
         return appUserRepository.findByLogin(login);
@@ -74,4 +75,19 @@ public class AppUserServiceImpl implements AppUserService {
             return appUserRepository.findAll();
         }
     }
+
+    @Override
+    public List<AppUser> getUsersByRole(String roleUser) {
+        if (roleUser == null || roleUser.trim().isEmpty()) {
+            return List.of();
+        }
+        UserRole role;
+        try {
+            role = UserRole.valueOf(roleUser);
+        } catch (IllegalArgumentException e) {
+            return List.of();
+        }
+        return appUserRepository.findByRole(role);
+    }
+
 }
