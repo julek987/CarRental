@@ -7,6 +7,7 @@ import WPFAT.service.interfaces.CarService;
 import WPFAT.service.interfaces.OrderService;
 import WPFAT.service.interfaces.PickupLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -130,10 +131,18 @@ public class OrderController {
     }
 
     @PostMapping("/cancel/{orderId}")
-    public String cancelOrder(@PathVariable Long orderId) {
+    public String cancelOrder(@PathVariable Long orderId, Principal principal) {
+        Order order = orderService.getOrderById(orderId);
+        String currentUserLogin = principal.getName();
+
+        if (!order.getUser().getLogin().equals(currentUserLogin)) {
+            throw new AccessDeniedException("You can only cancel your own orders.");
+        }
+
         orderService.cancelOrder(orderId);
         return "redirect:/user/panel";
     }
+
 
 
 }

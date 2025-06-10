@@ -3,6 +3,7 @@ package WPFAT.configuration;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +22,7 @@ public class SecurityConfiguration {
     private UserDetailsService userDetailsService;
 
     @Resource
-    private RoleBasedAuthenticationSuccessHandler successHandler; // Inject the custom handler
+    private RoleBasedAuthenticationSuccessHandler successHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,9 +42,13 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login*", "/register*").permitAll()
-                        .requestMatchers("/cars/**", "/orders/**").permitAll()
-                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/orders/create/**").hasAnyRole("USER", "ADMIN", "MANAGER")
+                        .requestMatchers("/orders").hasAnyRole("USER", "ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/orders/cancel/**").hasAnyRole("USER", "ADMIN", "MANAGER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/manager/**").hasRole("MANAGER")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/orders/**").hasAnyRole("ADMIN", "MANAGER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
