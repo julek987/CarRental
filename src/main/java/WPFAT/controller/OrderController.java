@@ -129,4 +129,11 @@ public class OrderController {
         return "redirect:/orders/manager/manage";
     }
 
+    @PostMapping("/cancel/{orderId}")
+    public String cancelOrder(@PathVariable Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/user/panel";
+    }
+
+
 }

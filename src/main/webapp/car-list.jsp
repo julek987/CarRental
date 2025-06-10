@@ -187,7 +187,7 @@
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/orders">
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/user/panel">
                             <i class="bi bi-list-check"></i> My Orders
                         </a>
                     </li>
