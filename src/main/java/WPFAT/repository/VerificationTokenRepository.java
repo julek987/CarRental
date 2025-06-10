@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Long> {
     VerificationToken findByToken(String token);
-
+    void deleteByUserId(Long userId);
     List<VerificationToken> findAllByUser_VerifiedFalseAndCreatedDateBefore(LocalDateTime threshold);
 }
 

@@ -31,6 +31,9 @@
     .card-body {
       padding: 1.5rem;
     }
+    .text-danger {
+      font-size: 0.875em;
+    }
   </style>
 </head>
 <body>
@@ -55,12 +58,14 @@
               <div class="form-group">
                 <label for="firstName" class="form-label small"><spring:message code="label.firstName"/></label>
                 <form:input path="firstName" class="form-control form-control-sm" id="firstName" required="true"/>
+                <form:errors path="firstName" cssClass="text-danger"/>
               </div>
             </div>
             <div class="col-6">
               <div class="form-group">
                 <label for="lastName" class="form-label small"><spring:message code="label.lastName"/></label>
                 <form:input path="lastName" class="form-control form-control-sm" id="lastName" required="true"/>
+                <form:errors path="lastName" cssClass="text-danger"/>
               </div>
             </div>
           </div>
@@ -68,16 +73,19 @@
           <div class="form-group">
             <label for="login" class="form-label small"><spring:message code="label.username"/></label>
             <form:input path="login" class="form-control form-control-sm" id="login" required="true"/>
+            <form:errors path="login" cssClass="text-danger"/>
           </div>
 
           <div class="form-group">
             <label for="password" class="form-label small"><spring:message code="label.password"/></label>
             <form:password path="password" class="form-control form-control-sm" id="password" required="true"/>
+            <form:errors path="password" cssClass="text-danger"/>
           </div>
 
           <div class="form-group">
             <label for="email" class="form-label small"><spring:message code="label.email"/></label>
             <form:input path="email" type="email" class="form-control form-control-sm" id="email" required="true"/>
+            <form:errors path="email" cssClass="text-danger"/>
           </div>
 
           <div class="row g-2">
@@ -85,12 +93,14 @@
               <div class="form-group">
                 <label for="telephone" class="form-label small"><spring:message code="label.telephone"/></label>
                 <form:input path="telephone" type="tel" class="form-control form-control-sm" id="telephone"/>
+                <form:errors path="telephone" cssClass="text-danger"/>
               </div>
             </div>
             <div class="col-6">
               <div class="form-group">
                 <label for="dateOfBirth" class="form-label small"><spring:message code="label.birthDate"/></label>
                 <form:input path="dateOfBirth" type="date" class="form-control form-control-sm" id="dateOfBirth" required="true"/>
+                <form:errors path="dateOfBirth" cssClass="text-danger"/>
               </div>
             </div>
           </div>

@@ -15,4 +15,6 @@ public interface AppUserService {
     List<AppUser> listAppUsersByLoginAndRole(String login, String role);
 
     List<AppUser> getUsersByRole(String roleUser);
+
+    boolean getUserByEmail(String email);
 }

@@ -47,7 +47,7 @@
     </div>
     <div class="form-group">
       <label for="password"><spring:message code="edit.user.password"/></label>
-      <input type="text" id="password" name="password" value="${user.password}" required>
+      <input type="password" id="password" name="password" required>
     </div>
     <div class="form-group">
       <label for="firstName"><spring:message code="edit.user.firstName"/></label>

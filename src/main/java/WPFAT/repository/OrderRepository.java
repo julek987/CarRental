@@ -23,4 +23,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByStatusAndCreatedDateBefore(OrderStatus orderStatus, LocalDateTime cutoff);
 
     List<Order> findByCarIdAndStatusIn(Long carId, List<OrderStatus> confirmed);
+
+    void deleteByCarId(Long carId);
+    void deleteByUserId(Long userId);
 }

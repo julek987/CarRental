@@ -10,7 +10,6 @@ public interface CarService {
     Car getCarById(Long id);
     List<Car> getAvailableCars();
     Car saveCar(Car car);
-    void deleteCar(Long id);
     void deleteCarById(Long id);
     List<LocalDate> getBookedDatesForCar(Long carId);
 }

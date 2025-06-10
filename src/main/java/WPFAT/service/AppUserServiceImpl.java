@@ -3,6 +3,8 @@ package WPFAT.service;
 import WPFAT.model.AppUser;
 import WPFAT.model.enums.UserRole;
 import WPFAT.repository.AppUserRepository;
+import WPFAT.repository.OrderRepository;
+import WPFAT.repository.VerificationTokenRepository;
 import WPFAT.service.interfaces.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,11 +18,15 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final OrderRepository orderRepository;
+    private final VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
-    public AppUserServiceImpl(AppUserRepository appUserRepository,  PasswordEncoder passwordEncoder) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, OrderRepository orderRepository, VerificationTokenRepository verificationTokenRepository) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.orderRepository = orderRepository;
+        this.verificationTokenRepository = verificationTokenRepository;
     }
 
     @Transactional
@@ -37,8 +43,11 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Transactional
     public void deleteAppUser(long id) {
+        verificationTokenRepository.deleteByUserId(id);
+        orderRepository.deleteByUserId(id);
         appUserRepository.deleteById(id);
     }
+
 
     @Transactional
     public AppUser getAppUserById(long id) {
@@ -89,5 +98,11 @@ public class AppUserServiceImpl implements AppUserService {
         }
         return appUserRepository.findByRole(role);
     }
+
+    @Override
+    public boolean getUserByEmail(String email) {
+        return appUserRepository.findByEmail(email).isPresent();
+    }
+
 
 }
