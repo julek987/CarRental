@@ -66,7 +66,7 @@ public class CarServiceImpl implements CarService {
     public List<LocalDate> getBookedDatesForCar(Long carId) {
         List<Order> orders = orderRepository.findByCarIdAndStatusIn(
                 carId,
-                List.of(OrderStatus.CONFIRMED)
+                List.of(OrderStatus.CONFIRMED, OrderStatus.PENDING)
         );
 
         return orders.stream()
