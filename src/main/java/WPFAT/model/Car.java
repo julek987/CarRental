@@ -1,6 +1,7 @@
 package WPFAT.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -12,21 +13,31 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(name = "brand", nullable = false)
     private String brand;
 
+    @NotBlank
     @Column(name = "model", nullable = false)
     private String model;
 
+    @NotNull
+    @Min(value = 1886, message = "Year must be greater or equal 1886")
+    @Max(value = 2100, message = "Year must be realistic")
     @Column(name = "year", nullable = false)
     private Integer year;
 
+    @NotBlank
+    @Size(min = 1, max = 15)
     @Column(name = "license_plate", nullable = false, unique = true)
     private String licensePlate;
 
+    @NotBlank
     @Column(name = "color", nullable = false)
     private String color;
 
+    @NotNull
+    @PositiveOrZero(message = "Daily cost must be zero or positive")
     @Column(name = "daily_cost", nullable = false)
     private Double dailyCost;
 
@@ -38,6 +49,8 @@ public class Car {
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Order> orders;
+
+
 
     public Long getId() {
         return id;
