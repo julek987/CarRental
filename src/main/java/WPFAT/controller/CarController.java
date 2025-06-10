@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
@@ -111,6 +112,12 @@ public class CarController {
         // Generate calendar data for the current month
         List<CalendarDay> calendarDays = generateCalendarDays(currentMonth, car);
 
+        // Calculate days between if both dates are present
+        Long daysBetween = null;
+        if (startDate != null && endDate != null) {
+            daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+        }
+
         model.addAttribute("car", car);
         model.addAttribute("today", today);
         model.addAttribute("currentMonth", currentMonth);
@@ -120,6 +127,7 @@ public class CarController {
         model.addAttribute("calendarDays", calendarDays);
         model.addAttribute("selectedStartDate", startDate);
         model.addAttribute("selectedEndDate", endDate);
+        model.addAttribute("daysBetween", daysBetween);
 
         return "car-order";
     }

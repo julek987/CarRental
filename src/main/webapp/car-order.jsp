@@ -296,11 +296,23 @@
 
             <!-- Total Price Calculation -->
             <c:if test="${not empty selectedStartDate and not empty selectedEndDate}">
-              <c:set var="daysBetween" value="${java.time.temporal.ChronoUnit.DAYS.between(selectedStartDate, selectedEndDate)}" />
+              <c:set var="daysBetween" value="${daysBetween}" />
               <c:set var="totalPrice" value="${daysBetween * car.dailyCost}" />
               <div class="col-12 total-price">
                 Total for ${daysBetween} day(s): $<fmt:formatNumber value="${totalPrice}" pattern="#,##0.00"/>
               </div>
+
+              <!-- Add hidden input to pass total price to the form -->
+              <input type="hidden" name="totalPrice" value="${totalPrice}">
+
+              <!-- Check for unavailable days in range -->
+              <c:set var="hasUnavailableDays" value="false" />
+              <c:forEach items="${calendarDays}" var="dayInfo">
+                <c:if test="${dayInfo.date.isAfter(selectedStartDate.minusDays(1)) and dayInfo.date.isBefore(selectedEndDate.plusDays(1)) and not dayInfo.available}">
+                  <c:set var="hasUnavailableDays" value="true" />
+                </c:if>
+              </c:forEach>
+            </c:if>
 
               <!-- Check for unavailable days in range -->
               <c:set var="hasUnavailableDays" value="false" />
@@ -315,7 +327,6 @@
                   <i class="bi bi-exclamation-triangle"></i> Your selected range includes unavailable days. Please adjust your dates.
                 </div>
               </c:if>
-            </c:if>
 
             <div class="col-12 mt-3">
               <button type="submit" class="btn btn-primary btn-sm w-100"
